@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { Note } from "../types/note";
 import { NOTES_PER_PAGE } from "@/lib/constants";
+import type { Tag } from "@/lib/constants";
 
 export interface FetchNotesHTTPResponse {
   notes: Note[];
@@ -11,7 +12,7 @@ interface FetchNotesParams {
   search?: string;
   page?: number;
   perPage?: number;
-  tag?: string;
+  tag?: Tag | 'All';
 }
 
 export interface CreateNoteParams {
@@ -53,7 +54,7 @@ export async function fetchNotes({ search, page = 1, tag }: FetchNotesParams) {
   return response.data;
 }
 
-export async function fetchNoteById(id: number) {
+export async function fetchNoteById(id: string) {
   const response = await noteServiceClient.get<Note>(`/${id}`);
   return response.data;
 }
@@ -67,7 +68,7 @@ export async function createNote({ title, content = "", tag }: CreateNoteParams)
   return response.data;
 }
 
-export async function deleteNote(id: number) {
+export async function deleteNote(id: string) {
   const response = await noteServiceClient.delete<Note>(`/${id}`);
   return response.data;
 }
